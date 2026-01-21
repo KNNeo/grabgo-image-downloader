@@ -1,0 +1,8 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_CURRENT_USER\Software\Classes\dlapp]
+@="URL:DLApp Protocol"
+"URL Protocol"=""
+
+[HKEY_CURRENT_USER\Software\Classes\dlapp\shell\open\command]
+@="\"C:\\Windows\\System32\\WindowsPowerShell\\v1.0\\powershell.exe\" -NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File \"C:\\Users\\{user}\\.local\\dlapp_downloader.ps1\" \"%1\""

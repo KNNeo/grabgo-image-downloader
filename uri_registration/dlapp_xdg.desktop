@@ -1,0 +1,8 @@
+[Desktop Entry]
+Name=DLApp URL Handler
+Comment=Handle dlapp:// URLs
+Exec=/home/{user}/.local/bin/dlapp_downloader.sh %u
+Type=Application
+Terminal=false
+NoDisplay=true
+MimeType=x-scheme-handler/dlapp;
