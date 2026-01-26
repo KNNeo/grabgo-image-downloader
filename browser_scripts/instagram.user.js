@@ -68,6 +68,9 @@
                     .replace('{user}', encodeURIComponent('SEIYUU/' + folder));
                     console.log(url);
                     window.location.href = url;
+                    if(art.querySelector('button[aria-label="Next"]')) {
+                        art.querySelector('button[aria-label="Next"]').click();
+                    }
                 };
                 wrapper.appendChild(solo);
                 art.insertBefore(wrapper, art.childNodes[0]);
@@ -107,5 +110,6 @@ var mapper = function(data) {
     }
     return null;
 };
+
 
 var list = {};
