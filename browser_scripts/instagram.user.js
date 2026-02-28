@@ -2,8 +2,8 @@
 // @name         Grab & Go Image Downloader - instagram.com
 // @namespace    http://tampermonkey.net/
 // @version      2026-01-21
-// @description  try to take over the world!
-// @author       You
+// @description  One click image processor to downloader script
+// @author       GitHub KNNeo
 // @match        https://www.instagram.com/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=instagram.com
 // @grant        none
@@ -27,7 +27,7 @@
                 solo.style.all = 'unset';
                 solo.style.cursor = 'pointer';
                 solo.innerText = '👤';
-                solo.oncontextmenu = function() {
+                solo.onclick = function() {
                     event.preventDefault();
                     let art = event.target.closest('article');
                     let sections = art.querySelector('div:has(> :nth-child(3))');
@@ -111,5 +111,5 @@ var mapper = function(data) {
     return null;
 };
 
-
+// add your own mappings here to prevent reliance on browser storage
 var list = {};
