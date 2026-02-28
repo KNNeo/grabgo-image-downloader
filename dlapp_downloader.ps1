@@ -63,6 +63,9 @@ if (-not (Test-Path $TargetDir)) {
 # Prevent overwrite
 if (Test-Path $OutFile) {
     Write-Host "File already exists"
+    if ([string]::IsNullOrEmpty($user)) {
+        $user = "Common Folder"
+    }
     New-BurntToastNotification -Text "Save to $user failed", "File already exists: $name" -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
     exit 1
 }
@@ -82,9 +85,13 @@ try {
 catch {
     if (Test-Path $tmp) { Remove-Item $tmp -Force }
     Write-Host "Download failed"
+    if ([string]::IsNullOrEmpty($user)) {
+        $user = "Common Folder"
+    }
     New-BurntToastNotification -Text "Save to $user failed", "Try again. $name" -Sound Default -AppLogo null
     exit 1
 }
 
 Write-Host "---- DEBUG END ----"
+
 
