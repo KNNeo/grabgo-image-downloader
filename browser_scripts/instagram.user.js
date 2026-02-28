@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grab & Go Image Downloader - Instagram
 // @namespace    http://tampermonkey.net/
-// @version      2026-01-21
+// @version      2026-02-28
 // @description  One click image processor to downloader script
 // @author       GitHub KNNeo
 // @match        https://www.instagram.com/*
@@ -114,6 +114,7 @@ var mapper = function(data) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
 
 
 
