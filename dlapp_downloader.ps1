@@ -74,7 +74,10 @@ try {
     Invoke-WebRequest -Uri $url -OutFile $tmp -ErrorAction Stop
     Move-Item $tmp $OutFile -ErrorAction Stop
     Write-Host "Saved: $OutFile"
-    New-BurntToastNotification -Text "Save to $user", $name -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
+    if ([string]::IsNullOrEmpty($user)) {
+        $user = "Common Folder"
+    }
+    New-BurntToastNotification -Text "Saved to $user", $name -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
 }
 catch {
     if (Test-Path $tmp) { Remove-Item $tmp -Force }
@@ -84,3 +87,4 @@ catch {
 }
 
 Write-Host "---- DEBUG END ----"
+
