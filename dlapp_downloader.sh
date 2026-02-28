@@ -46,23 +46,23 @@ user=$(urldecode "$user_enc")
 
 echo "Decoded URL: $url"
 echo "Decoded Name: $name"
-echo "Decoded User: $user"
+echo "Decoded User: ${user:-"Common Folder"}"
 
 # Set directory/file variables
-TARGET="/media/$USER/PORTABLE/RBKN/Pictures/IDOLS/SEIYUU"
+TARGET=""
 OUT="$TARGET/$user/$name"
 
 # Find parent directory, fail if missing
 echo "Target directory: $TARGET"
 if [[ ! -d "$TARGET" ]]; then
-    notify-send -t 500 "Save to $user failed" "Output folder not found"
+    notify-send -t 500 "Save to ${user:-"Common Folder"} failed" "Output folder not found"
     exit 1
 fi
 
 # Find destination file, fail if exists (no overwrite)
 echo "Output file: $OUT"
 if [[ -e "$OUT" ]]; then
-    notify-send -t 500 "Save to $user failed" "File already exists: $name"
+    notify-send -t 500 "Save to ${user:-"Common Folder"} failed" "File already exists: $name"
     exit 1
 fi
 
