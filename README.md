@@ -4,11 +4,11 @@ One click image downloader based on URI parameters
 
 ## How It Works
 - Upon scroll, UserScript will detect images on websites and add buttons on post/images
-- Upon right-click of button (prevent left click open image), opens URI detected by OS
-- OS detects URI and fetches image in time (as per user session, will get  images generated via session URL eg. Facebook)
+- Upon left click of 👤 button, opens URI detected by OS
+- OS detects URI and fetches image in time (as per user session, will get images generated via session URL; Instagram's CDN is Facebook domain which URL has session ID)
 
 ## Prerequisites
-- Window / Linux(Ubuntu)
+- Window / Linux (Ubuntu-based)
 - Browser with UserScript agent installed (eg. Tampermonkey)
 
 ## Setup
