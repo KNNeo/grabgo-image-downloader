@@ -76,6 +76,9 @@ var downloader = function(event) {
     let art = event.target.closest('article');
     let user = art.querySelector('[data-testid="User-Name"]').innerText;
     let folder = mapper(user);
+    if(event.target.classList.contains('monkey-action-grp')) {
+        folder = '';
+    }
     if(!folder) {
         let result = prompt('mapping not found! enter mapping in format [handle]/[folder] or as [folder] for one-time add');
         if(result) {
@@ -97,9 +100,6 @@ var downloader = function(event) {
             return alert('mapping add failed! try again');
         }
     }
-    if(event.target.classList.contains('monkey-action-grp')) {
-        folder = '';
-    }
     let url = 'dlapp://save?url={link}&name={filename}&user={user}'
     .replace('{link}', encodeURIComponent(fullSizeImg))
     .replace('{filename}', encodeURIComponent(source))
@@ -110,3 +110,4 @@ var downloader = function(event) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
