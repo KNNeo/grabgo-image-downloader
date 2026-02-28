@@ -98,6 +98,7 @@
         }
         console.log('scrolling');
     });
+    console.log('grab n go image downloader for instagram loaded');
 })();
 
 var mapper = function(data) {
@@ -113,5 +114,6 @@ var mapper = function(data) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
 
 
