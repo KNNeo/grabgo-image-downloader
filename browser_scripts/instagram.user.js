@@ -101,8 +101,8 @@
 })();
 
 var mapper = function(data) {
-    list = localStorage.getItem('insta-monkey-action-mapper') ? JSON.parse(localStorage.getItem('insta-monkey-action-mapper')) : list;
-    console.log('insta-monkey-action-mapper', list);
+    list = localStorage.getItem('insta-grabngo-action-mapper') ? JSON.parse(localStorage.getItem('insta-grabngo-action-mapper')) : list;
+    console.log('insta-grabngo-action-mapper', list);
     for(let key of Object.keys(list)) {
         if(data.includes(key)) {
             return list[key];
@@ -113,4 +113,5 @@ var mapper = function(data) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
 
