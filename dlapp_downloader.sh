@@ -68,6 +68,6 @@ fi
 
 # Download file to destination (assume no auth)
 curl -fL "$url" -o "$OUT"
-notify-send -t 500 "Saved to $user" "$name"
+notify-send -t 500 "Saved to ${user:-"Common Folder"}" "$name"
 
 echo "---- DEBUG END ----"
