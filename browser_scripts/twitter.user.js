@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grab & Go Image Downloader - Twitter/X
 // @namespace    http://tampermonkey.net/
-// @version      2026-01-21
+// @version      2026-02-28
 // @description  GitHub KNNeo
 // @author       One click image processor to downloader script
 // @match        https://twitter.com/i/lists/*
@@ -90,3 +90,4 @@ var mapper = function(data) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
