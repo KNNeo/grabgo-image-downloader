@@ -1,5 +1,5 @@
 // ==UserScript==
-// @name         Grab & Go Image Downloader - instagram.com
+// @name         Grab & Go Image Downloader - Instagram
 // @namespace    http://tampermonkey.net/
 // @version      2026-01-21
 // @description  One click image processor to downloader script
@@ -65,7 +65,7 @@
                     let url = 'dlapp://save?url={link}&name={filename}&user={user}'
                     .replace('{link}', encodeURIComponent(image.src))
                     .replace('{filename}', encodeURIComponent(source.slice(source.lastIndexOf('/')+1)))
-                    .replace('{user}', encodeURIComponent('SEIYUU/' + folder));
+                    .replace('{user}', encodeURIComponent(folder));
                     console.log(url);
                     window.location.href = url;
                     if(art.querySelector('button[aria-label="Next"]')) {
@@ -113,3 +113,4 @@ var mapper = function(data) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
+
