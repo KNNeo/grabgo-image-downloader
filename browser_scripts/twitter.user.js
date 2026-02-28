@@ -1,9 +1,11 @@
 // ==UserScript==
-// @name         Grab & Go Image Downloader - x.com
+// @name         Grab & Go Image Downloader - Twitter/X
 // @namespace    http://tampermonkey.net/
 // @version      2026-01-21
-// @description  try to take over the world!
-// @author       You
+// @description  GitHub KNNeo
+// @author       One click image processor to downloader script
+// @match        https://twitter.com/i/lists/*
+// @match        https://twitter.com/*/status/*
 // @match        https://x.com/i/lists/*
 // @match        https://x.com/*/status/*
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=x.com
@@ -13,6 +15,7 @@
 (function() {
     'use strict';
     window.addEventListener('scroll', function() {
+        let format = '.jpeg'; // can change to .png or .jpg
         let arts = Array.from(document.querySelectorAll('article'));
         for(let art of arts) {
             if(art.getAttribute('data-index')) continue;
@@ -26,13 +29,13 @@
                 solo.style.fontSize = '1.2rem';
                 solo.className = 'monkey-action-solo';
                 solo.innerText = '👤';
-                solo.oncontextmenu = function() {
+                solo.onclick = function() {
                     event.preventDefault();
                     let img = event.target.parentElement.querySelector('img');
                     let imgUrl = new URL(img.src);
                     imgUrl.searchParams.set("name", "large");
                     let fullSizeImg = imgUrl.toString();
-                    let source = fullSizeImg.slice(fullSizeImg.indexOf('/media/')+7, fullSizeImg.indexOf('?')) + '.jpeg';
+                    let source = fullSizeImg.slice(fullSizeImg.indexOf('/media/')+7, fullSizeImg.indexOf('?')) + format;
                     let art = event.target.closest('article');
                     let user = art.querySelector('[data-testid="User-Name"]').innerText;
                     let folder = mapper(user);
@@ -60,7 +63,7 @@
                     let url = 'dlapp://save?url={link}&name={filename}&user={user}'
                     .replace('{link}', encodeURIComponent(fullSizeImg))
                     .replace('{filename}', encodeURIComponent(source))
-                    .replace('{user}', encodeURIComponent('SEIYUU/' + folder));
+                    .replace('{user}', encodeURIComponent(folder));
                     console.log(url);
                     window.location.href = url;
                 };
@@ -71,11 +74,12 @@
         }
         console.log('scrolling');
     });
+    console.log('grab n go image downloader for twitter/x loaded');
 })();
 
 var mapper = function(data) {
-    list = localStorage.getItem('x-monkey-action-mapper') ? JSON.parse(localStorage.getItem('x-monkey-action-mapper')) : list;
-    console.log('x-monkey-action-mapper', list);
+    list = localStorage.getItem('twitter-grabngo-action-mapper') ? JSON.parse(localStorage.getItem('twitter-grabngo-action-mapper')) : list;
+    console.log('twitter-grabngo-action-mapper', list);
     for(let key of Object.keys(list)) {
         if(data.includes(key)) {
             return list[key];
@@ -84,4 +88,5 @@ var mapper = function(data) {
     return null;
 };
 
+// add your own mappings here to prevent reliance on browser storage
 var list = {};
