@@ -6,6 +6,7 @@ One click image downloader based on URI parameters
 - Upon scroll, UserScript will detect images on websites and add buttons on post/images
 - Upon left click of 👤 button, opens URI detected by OS
 - OS detects URI and fetches image in time (as per user session, will get images generated via session URL; Instagram's CDN is Facebook domain which URL has session ID)
+- AddGroupFolder option is for downloading to root folder as assigned in downloader, enable/disable in UserScript
 
 ## Prerequisites
 - Window / Linux (Ubuntu-based)
