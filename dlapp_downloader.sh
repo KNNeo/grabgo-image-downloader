@@ -48,24 +48,26 @@ echo "Decoded URL: $url"
 echo "Decoded Name: $name"
 echo "Decoded User: $user"
 
-TARGET=""
-echo "Target directory: $TARGET"
-
-if [[ ! -d "$TARGET" ]]; then
-    notify-send "Save to $user failed" "Output folder not found"
-    exit 1
-fi
-
+# Set directory/file variables
+TARGET="/media/$USER/PORTABLE/RBKN/Pictures/IDOLS/SEIYUU"
 OUT="$TARGET/$user/$name"
 
-if [[ -e "$OUT" ]]; then
-    notify-send "Save to $user failed" "File already exists: $name"
+# Find parent directory, fail if missing
+echo "Target directory: $TARGET"
+if [[ ! -d "$TARGET" ]]; then
+    notify-send -t 500 "Save to $user failed" "Output folder not found"
     exit 1
 fi
 
-curl -fL "$url" -o "$OUT"
+# Find destination file, fail if exists (no overwrite)
+echo "Output file: $OUT"
+if [[ -e "$OUT" ]]; then
+    notify-send -t 500 "Save to $user failed" "File already exists: $name"
+    exit 1
+fi
 
+# Download file to destination (assume no auth)
+curl -fL "$url" -o "$OUT"
 notify-send -t 500 "Saved to $user" "$name"
 
 echo "---- DEBUG END ----"
-
