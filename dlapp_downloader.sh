@@ -55,19 +55,19 @@ OUT="$TARGET/$user/$name"
 # Find parent directory, fail if missing
 echo "Target directory: $TARGET"
 if [[ ! -d "$TARGET" ]]; then
-    notify-send -t 500 "Save to ${user:-"Common Folder"} failed" "Output folder not found"
+    notify-send -a "Grab & Go Image Downloader" -t 500 "Save to ${user:-"Common Folder"} failed" "Output folder not found"
     exit 1
 fi
 
 # Find destination file, fail if exists (no overwrite)
 echo "Output file: $OUT"
 if [[ -e "$OUT" ]]; then
-    notify-send -t 500 "Save to ${user:-"Common Folder"} failed" "File already exists: $name"
+    notify-send -a "Grab & Go Image Downloader" -t 500 "Save to ${user:-"Common Folder"} failed" "File already exists: $name"
     exit 1
 fi
 
 # Download file to destination (assume no auth)
 curl -fL "$url" -o "$OUT"
-notify-send -t 500 "Saved to ${user:-"Common Folder"}" "$name"
+notify-send -a "Grab & Go Image Downloader" -t 500 "Saved to ${user:-"Common Folder"}" "$name"
 
 echo "---- DEBUG END ----"
