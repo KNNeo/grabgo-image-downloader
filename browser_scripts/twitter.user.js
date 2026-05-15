@@ -2,8 +2,8 @@
 // @name         Grab & Go Image Downloader - Twitter/X
 // @namespace    http://tampermonkey.net/
 // @version      2026-02-28
-// @description  GitHub KNNeo
-// @author       One click image processor to downloader script
+// @description  One click image processor to downloader script
+// @author       GitHub KNNeo
 // @match        https://twitter.com/i/lists/*
 // @match        https://twitter.com/*/status/*
 // @match        https://x.com/i/lists/*
