@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Grab & Go Image Downloader - Instagram
 // @namespace    http://tampermonkey.net/
-// @version      2026-02-28
+// @version      2026-05-19
 // @description  One click image processor to downloader script
 // @author       GitHub KNNeo
 // @match        https://www.instagram.com/*
@@ -87,16 +87,22 @@ var downloader = function(event) {
     let idx = parseInt(art.getAttribute('data-index'));
     let item = gallery.querySelectorAll('li[class]')[idx > 0 ? 1 : 0];
     let image = item?.querySelector('img') || gallery?.querySelector('img');
-    if(window.innerWidth < 640 || !image.src.includes('_e35_tt6')) {
+    if(!image || !image.src) {
+        alert('image not found, skipping');
+        if(art.querySelector('button[aria-label="Next"]')) {
+            art.querySelector('button[aria-label="Next"]').click();
+        }
+    }
+    if(window.innerWidth < 640 && image.src.includes('_e35_p')) {
         return alert('maximize window for largest file output!');
     }
     let source = image.src.slice(0, image.src.lastIndexOf('?'));
-    let user = art.querySelector(':has(img)').innerText;
+    let user = art.querySelector('a').innerText;
     let folder = mapper(user);
     if(event.target.classList.contains('monkey-action-grp')) {
         folder = '';
     }
-    if(!folder) {
+    else if(!folder) {
         let result = prompt('mapping not found! enter mapping in format [handle]/[folder] or as [folder] for one-time add');
         if(result) {
             let sections = result.split('/');
@@ -130,4 +136,3 @@ var downloader = function(event) {
 
 // add your own mappings here to prevent reliance on browser storage
 var list = {};
-
