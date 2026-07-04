@@ -22,7 +22,7 @@ urldecode() {
 # Initialize
 url_enc=""
 name_enc=""
-user_enc=""
+dir_enc=""
 
 # Extract parameters manually
 for param in ${QUERY//&/ }; do
@@ -31,43 +31,43 @@ for param in ${QUERY//&/ }; do
     case "$key" in
         url) url_enc="$val" ;;
         name) name_enc="$val" ;;
-        user) user_enc="$val" ;;
+        folder) dir_enc="$val" ;;
     esac
 done
 
 echo "Encoded URL: $url_enc"
 echo "Encoded Name: $name_enc"
-echo "Encoded User: $user_enc"
+echo "Encoded Directory: $dir_enc"
 
 # Decode
 url=$(urldecode "$url_enc")
 name=$(urldecode "$name_enc")
-user=$(urldecode "$user_enc")
+dir=$(urldecode "$dir_enc")
 
 echo "Decoded URL: $url"
 echo "Decoded Name: $name"
-echo "Decoded User: ${user:-"Common Folder"}"
+echo "Decoded Directory: $dir"
 
 # Set directory/file variables
-TARGET=""
-OUT="$TARGET/$user/$name"
+TARGET="/Pictures"
+OUT="$TARGET/$dir/$name"
 
 # Find parent directory, fail if missing
 echo "Target directory: $TARGET"
 if [[ ! -d "$TARGET" ]]; then
-    notify-send -a "Grab & Go Image Downloader" -t 500 "Save to ${user:-"Common Folder"} failed" "Output folder not found"
+    notify-send -a "Grab & Go Image Downloader" -h string:x-canonical-private-synchronous:dlapp_process -t 10 "Save to $dir failed" "Output folder not found"
     exit 1
 fi
 
 # Find destination file, fail if exists (no overwrite)
 echo "Output file: $OUT"
 if [[ -e "$OUT" ]]; then
-    notify-send -a "Grab & Go Image Downloader" -t 500 "Save to ${user:-"Common Folder"} failed" "File already exists: $name"
+    notify-send -a "Grab & Go Image Downloader" -h string:x-canonical-private-synchronous:dlapp_process -t 10 "Save to $dir failed" "File already exists: $name"
     exit 1
 fi
 
 # Download file to destination (assume no auth)
 curl -fL "$url" -o "$OUT"
-notify-send -a "Grab & Go Image Downloader" -t 500 "Saved to ${user:-"Common Folder"}" "$name"
+notify-send -a "Grab & Go Image Downloader" -h string:x-canonical-private-synchronous:dlapp_process -t 10 "Saved to $dir" "$name"
 
 echo "---- DEBUG END ----"
