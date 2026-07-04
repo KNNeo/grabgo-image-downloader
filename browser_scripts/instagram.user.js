@@ -1,10 +1,11 @@
 // ==UserScript==
-// @name         Grab & Go Image Downloader - Instagram
+// @name         Grab & Go Image Downloader - Instagram Feed
 // @namespace    http://tampermonkey.net/
-// @version      2026-05-19
+// @version      2026-07-04
 // @description  One click image processor to downloader script
 // @author       GitHub KNNeo
-// @match        https://www.instagram.com/*
+// @match        https://www.instagram.com/
+// @match        https://www.instagram.com/?variant=following
 // @icon         https://www.google.com/s2/favicons?sz=64&domain=instagram.com
 // @grant        none
 // ==/UserScript==
@@ -29,7 +30,7 @@
                 solo.style.cursor = 'pointer';
                 solo.className = 'monkey-action-solo';
                 solo.innerText = '👤';
-                solo.onclick = downloader;
+                solo.oncontextmenu = downloader;
                 wrapper.appendChild(solo);
                 if(enableGroupFolder) {
                     let grp = document.createElement('button');
@@ -37,7 +38,7 @@
                     grp.style.cursor = 'pointer';
                     grp.className = 'monkey-action-grp';
                     grp.innerText = '👥';
-                    grp.onclick = downloader;
+                    grp.oncontextmenu = downloader;
                     wrapper.appendChild(grp);
                 }
                 art.insertBefore(wrapper, art.childNodes[0]);
@@ -93,19 +94,20 @@ var downloader = function(event) {
             art.querySelector('button[aria-label="Next"]').click();
         }
     }
-    if(window.innerWidth < 640 && image.src.includes('_e35_p')) {
+    if(window.innerWidth < 640) {
         return alert('maximize window for largest file output!');
     }
     let source = image.src.slice(0, image.src.lastIndexOf('?'));
     let user = art.querySelector('a').innerText;
+    console.log('user', user);
     let folder = mapper(user);
     if(event.target.classList.contains('monkey-action-grp')) {
         folder = '';
     }
     else if(!folder) {
-        let result = prompt('mapping not found! enter mapping in format [handle]/[folder] or as [folder] for one-time add');
+        let result = prompt('mapping not found! enter mapping in format [handle]|[folder] or as [folder] for one-time add');
         if(result) {
-            let sections = result.split('/');
+            let sections = result.split('|');
             if(sections.length == 2) {
                 list[sections[0]] = sections[1];
                 localStorage.setItem('insta-monkey-action-mapper', JSON.stringify(list));
@@ -123,10 +125,10 @@ var downloader = function(event) {
             return alert('mapping add failed! try again');
         }
     }
-    let url = 'dlapp://save?url={link}&name={filename}&user={user}'
+    let url = 'dlapp://save?url={link}&name={filename}&folder={folder}'
     .replace('{link}', encodeURIComponent(image.src))
     .replace('{filename}', encodeURIComponent(source.slice(source.lastIndexOf('/')+1)))
-    .replace('{user}', encodeURIComponent(folder));
+    .replace('{folder}', encodeURIComponent(folder));
     console.log(url);
     window.location.href = url;
     if(art.querySelector('button[aria-label="Next"]')) {
