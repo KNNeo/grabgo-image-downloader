@@ -1,9 +1,9 @@
 // ==UserScript==
 // @name         Grab & Go Image Downloader - Twitter/X
 // @namespace    http://tampermonkey.net/
-// @version      2026-02-28
-// @description  One click image processor to downloader script
-// @author       GitHub KNNeo
+// @version      2026-07-04
+// @description  GitHub KNNeo
+// @author       One click image processor to downloader script
 // @match        https://twitter.com/i/lists/*
 // @match        https://twitter.com/*/status/*
 // @match        https://x.com/i/lists/*
@@ -26,10 +26,10 @@
                 solo.style.cursor = 'pointer';
                 solo.style.position = 'absolute';
                 solo.style.zIndex = '9';
-                solo.style.fontSize = '1.2rem';
+                solo.style.padding = '0';
                 solo.className = 'monkey-action-solo';
                 solo.innerText = '👤';
-                solo.onclick = downloader;
+                solo.oncontextmenu = downloader;
                 if(!art.querySelector('.monkey-action-solo')) {
                     menu.parentElement.appendChild(solo);
                 }
@@ -37,12 +37,12 @@
                     let grp = art.querySelector('.monkey-action-grp') || document.createElement('button');
                     grp.style.cursor = 'pointer';
                     grp.style.position = 'absolute';
-                    grp.style.top = '1.2rem';
+                    grp.style.top = '1.25rem';
                     grp.style.zIndex = '9';
-                    grp.style.fontSize = '1.2rem';
+                    grp.style.padding = '0';
                     grp.className = 'monkey-action-grp';
                     grp.innerText = '👥';
-                    grp.onclick = downloader;
+                    grp.oncontextmenu = downloader;
                     if(!art.querySelector('.monkey-action-grp')) {
                         menu.parentElement.appendChild(grp);
                     }
@@ -70,7 +70,7 @@ var downloader = function(event) {
     let format = '.jpeg'; // can change to .png or .jpg
     let img = event.target.parentElement.querySelector('img');
     let imgUrl = new URL(img.src);
-    imgUrl.searchParams.set('name', 'large');
+    imgUrl.searchParams.set('name', 'orig');
     let fullSizeImg = imgUrl.toString();
     let source = fullSizeImg.slice(fullSizeImg.indexOf('/media/')+7, fullSizeImg.indexOf('?')) + format;
     let art = event.target.closest('article');
@@ -79,10 +79,10 @@ var downloader = function(event) {
     if(event.target.classList.contains('monkey-action-grp')) {
         folder = '';
     }
-    if(!folder) {
-        let result = prompt('mapping not found! enter mapping in format [handle]/[folder] or as [folder] for one-time add');
+    else if(!folder) {
+        let result = prompt('mapping not found! enter mapping in format [handle]|[folder] or as [folder] for one-time add');
         if(result) {
-            let sections = result.split('/');
+            let sections = result.split('|');
             if(sections.length == 2) {
                 list[sections[0]] = sections[1];
                 localStorage.setItem('x-monkey-action-mapper', JSON.stringify(list));
@@ -100,10 +100,10 @@ var downloader = function(event) {
             return alert('mapping add failed! try again');
         }
     }
-    let url = 'dlapp://save?url={link}&name={filename}&user={user}'
+    let url = 'dlapp://save?url={link}&name={filename}&folder={folder}'
     .replace('{link}', encodeURIComponent(fullSizeImg))
     .replace('{filename}', encodeURIComponent(source))
-    .replace('{user}', encodeURIComponent(folder));
+    .replace('{folder}', encodeURIComponent(folder));
     console.log(url);
     window.location.href = url;
 };
