@@ -34,24 +34,24 @@ $Query -split '&' | ForEach-Object {
 
 $url  = $params['url']
 $name = $params['name']
-$user = $params['user']
+$user = $params['folder']
 
 Write-Host "Decoded URL:  $url"
 Write-Host "Decoded Name: $name"
-Write-Host "Decoded User: $user"
+Write-Host "Decoded Directory: $user"
 
 # Sanitize filesystem inputs
 $name = [System.IO.Path]::GetFileName($name)
-$user = [System.IO.Path]::GetFileName($user)
+$dir = [System.IO.Path]::GetFileName($user)
 
 # Target path
-$TargetRoot = ""
-$TargetDir  = Join-Path $TargetRoot $user
+$TargetRoot = "[Environment]::GetFolderPath("MyPictures")"
+$TargetDir  = Join-Path $TargetRoot $dir
 $OutFile    = Join-Path $TargetDir $name
 
 Write-Host "Target file: $OutFile"
 
-# Ensure drive and user directory exist
+# Ensure drive and directory exist
 if (-not (Test-Path -PathType Container $TargetRoot)) {
     New-Item -Path $TargetRoot -ItemType Directory -Force | Out-Null
 }
@@ -63,10 +63,10 @@ if (-not (Test-Path $TargetDir)) {
 # Prevent overwrite
 if (Test-Path $OutFile) {
     Write-Host "File already exists"
-    if ([string]::IsNullOrEmpty($user)) {
-        $user = "Common Folder"
+    if ([string]::IsNullOrEmpty($dir)) {
+        $dir = ""
     }
-    New-BurntToastNotification -Text "Save to $user failed", "File already exists: $name" -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
+    New-BurntToastNotification -Text "Save to $dir failed", "File already exists: $name" -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
     exit 1
 }
 
@@ -77,18 +77,18 @@ try {
     Invoke-WebRequest -Uri $url -OutFile $tmp -ErrorAction Stop
     Move-Item $tmp $OutFile -ErrorAction Stop
     Write-Host "Saved: $OutFile"
-    if ([string]::IsNullOrEmpty($user)) {
-        $user = "Common Folder"
+    if ([string]::IsNullOrEmpty($dir)) {
+        $dir = ""
     }
-    New-BurntToastNotification -Text "Saved to $user", $name -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
+    New-BurntToastNotification -Text "Saved to $dir", $name -Sound Default -ExpirationTime (Get-Date).AddSeconds(5) -AppLogo null
 }
 catch {
     if (Test-Path $tmp) { Remove-Item $tmp -Force }
     Write-Host "Download failed"
-    if ([string]::IsNullOrEmpty($user)) {
-        $user = "Common Folder"
+    if ([string]::IsNullOrEmpty($dir)) {
+        $dir = ""
     }
-    New-BurntToastNotification -Text "Save to $user failed", "Try again. $name" -Sound Default -AppLogo null
+    New-BurntToastNotification -Text "Save to $dir failed", "Try again. $name" -Sound Default -AppLogo null
     exit 1
 }
 
