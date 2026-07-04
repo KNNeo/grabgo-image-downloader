@@ -18,9 +18,9 @@ One click image downloader based on URI parameters
 - Instagram (browser_scripts/instagram.user.js)
 - Create your own, where output URI has to be the following:
 ```
-dlapp://save?url={link}&name={filename}&user={user}
+dlapp://save?url={link}&name={filename}&folder={folder}
 ```
-Replace {user} with directory name, {filename} with file name of output, and {link} with URL to GET from
+Replace {folder} with directory format start with slash (for Linux) or backslash (for Windows), {filename} with file name of output, and {link} with URL to GET from
 
 2. Place downloader in operating system
 - Windows
